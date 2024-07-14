@@ -68,11 +68,17 @@ export function EscrowOrder() {
 
     const program = new AnchorEscrowProgram(provider.connection);
     program.getOrders().then((orders) => {
-      setOrders(orders);
+      if (!orders || orders.length === 0) {
+        return;
+      }
+      setOrders(orders as any);
     });
 
     getTokenHoldings(wallet.publicKey).then((tokens) => {
-      setTokensHolding(tokens);
+      if (!tokens || tokens.length === 0) {
+        return;
+      }
+      setTokensHolding(tokens as any);
     });
   }, [wallet.publicKey]);
 
