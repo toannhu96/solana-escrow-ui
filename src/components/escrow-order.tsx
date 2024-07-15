@@ -365,19 +365,22 @@ export function EscrowOrder() {
                         <Button
                           onClick={(e) => {
                             e.preventDefault();
-                            if (wallet.publicKey === order.account.maker) {
+                            if (
+                              wallet.publicKey?.toBase58() ==
+                              order.account.maker.toBase58()
+                            ) {
                               signRefundEscrow(
                                 order.account.mintA,
                                 new BN(order.account.seed.toString())
                               );
-                              return;
+                            } else {
+                              signTakeEscrow(
+                                order.account.maker,
+                                order.account.mintA,
+                                order.account.mintB,
+                                new BN(order.account.seed.toString())
+                              );
                             }
-                            signTakeEscrow(
-                              order.account.maker,
-                              order.account.mintA,
-                              order.account.mintB,
-                              new BN(order.account.seed.toString())
-                            );
                           }}
                         >
                           {wallet.publicKey?.toBase58() ==
